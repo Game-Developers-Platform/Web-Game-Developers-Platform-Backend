@@ -4,7 +4,7 @@
   "description": "Backend for the final project in \"React Web Applications Course\"",
   "main": "index.js",
   "scripts": {
-    "start":"ts-node ./src/index.ts",
+    "start": "tsc && nodemon ./dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -25,5 +25,8 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.5.2",
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17"
   }
 }
