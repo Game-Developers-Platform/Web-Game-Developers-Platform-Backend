@@ -18,6 +18,7 @@ const supportedPlatforms = [
 export type GameType = {
     name: string;
     price: number;
+    image: string;
     description: string;
     developerId: mongoose.Schema.Types.ObjectId;
     platformLinks: { platform: string; url: string }[];
@@ -37,6 +38,11 @@ const GameSchema = new mongoose.Schema<GameType>({
         required: true,
         min: 0,
         max: 300,
+    },
+    image: {
+        type: String,
+        required: true,
+        match: /^https?:\/\/[^\s$.?#].[^\s]*$/,
     },
     description: {
         type: String,
