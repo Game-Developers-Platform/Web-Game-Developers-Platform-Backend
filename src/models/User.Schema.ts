@@ -30,12 +30,12 @@ const UserSchema = new mongoose.Schema<UserType>({
         required: true,
         trim: true,
         unique: true,
-        match: /^\S+@\S+\.\S+$/,
+        match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     },
     image: {
         type: String,
         required: true,
-        match: /^https?:\/\/[^\s$.?#].[^\s]*$/,
+        match: /\.(jpeg|jpg|gif|png)$/,
     },
     socialNetworks: [
         {
@@ -47,7 +47,7 @@ const UserSchema = new mongoose.Schema<UserType>({
             url: {
                 type: String,
                 required: true,
-                match: /^https?:\/\/[^\s$.?#].[^\s]*$/,
+                match: /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/,
             },
         },
     ],
