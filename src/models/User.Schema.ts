@@ -8,16 +8,16 @@ const socialPlatforms = [
     "Github",
 ];
 
-export type UserType = {
+export interface IUser {
     name: string;
     email: string;
     image: string;
     socialNetworks: { platform: string; url: string }[];
     gamesId: mongoose.Schema.Types.ObjectId[];
     birthDate: Date;
-};
+}
 
-const UserSchema = new mongoose.Schema<UserType>({
+const UserSchema = new mongoose.Schema<IUser>({
     name: {
         type: String,
         required: true,
@@ -30,12 +30,12 @@ const UserSchema = new mongoose.Schema<UserType>({
         required: true,
         trim: true,
         unique: true,
-        match: /^\S+@\S+\.\S+$/,
+        match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     },
     image: {
         type: String,
         required: true,
-        match: /^https?:\/\/[^\s$.?#].[^\s]*$/,
+        match: /\.(jpeg|jpg|gif|png)$/,
     },
     socialNetworks: [
         {
@@ -47,7 +47,7 @@ const UserSchema = new mongoose.Schema<UserType>({
             url: {
                 type: String,
                 required: true,
-                match: /^https?:\/\/[^\s$.?#].[^\s]*$/,
+                match: /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/,
             },
         },
     ],
@@ -63,4 +63,4 @@ const UserSchema = new mongoose.Schema<UserType>({
     },
 });
 
-export default mongoose.model<UserType>("User", UserSchema, "users");
+export default mongoose.model<IUser>("User", UserSchema, "users");

@@ -15,7 +15,7 @@ const supportedPlatforms = [
     "Apple App Store",
 ];
 
-export type GameType = {
+export interface IGame {
     name: string;
     price: number;
     image: string;
@@ -23,9 +23,9 @@ export type GameType = {
     developerId: mongoose.Schema.Types.ObjectId;
     platformLinks: { platform: string; url: string }[];
     releaseDate: Date;
-};
+}
 
-const GameSchema = new mongoose.Schema<GameType>({
+const GameSchema = new mongoose.Schema<IGame>({
     name: {
         type: String,
         required: true,
@@ -76,4 +76,4 @@ const GameSchema = new mongoose.Schema<GameType>({
     },
 });
 
-export default mongoose.model<GameType>("Game", GameSchema, "games");
+export default mongoose.model<IGame>("Game", GameSchema, "games");
