@@ -2,12 +2,12 @@ import mongoose from "mongoose";
 
 const supportedCurrencies = ["ILS", "EUR", "GBP"];
 
-export type CurrencyType = {
+export interface ICurrency {
     name: string;
     exchangeRate: number;
-};
+}
 
-const UserSchema = new mongoose.Schema<CurrencyType>({
+const UserSchema = new mongoose.Schema<ICurrency>({
     name: {
         type: String,
         enum: supportedCurrencies,
@@ -21,8 +21,4 @@ const UserSchema = new mongoose.Schema<CurrencyType>({
     },
 });
 
-export default mongoose.model<CurrencyType>(
-    "Currency",
-    UserSchema,
-    "currencies"
-);
+export default mongoose.model<ICurrency>("Currency", UserSchema, "currencies");

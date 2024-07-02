@@ -8,16 +8,16 @@ const socialPlatforms = [
     "Github",
 ];
 
-export type UserType = {
+export interface IUser {
     name: string;
     email: string;
     image: string;
     socialNetworks: { platform: string; url: string }[];
     gamesId: mongoose.Schema.Types.ObjectId[];
     birthDate: Date;
-};
+}
 
-const UserSchema = new mongoose.Schema<UserType>({
+const UserSchema = new mongoose.Schema<IUser>({
     name: {
         type: String,
         required: true,
@@ -63,4 +63,4 @@ const UserSchema = new mongoose.Schema<UserType>({
     },
 });
 
-export default mongoose.model<UserType>("User", UserSchema, "users");
+export default mongoose.model<IUser>("User", UserSchema, "users");
