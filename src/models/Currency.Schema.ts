@@ -21,4 +21,5 @@ const UserSchema = new mongoose.Schema<ICurrency>({
     },
 });
 
-export default mongoose.model<ICurrency>("Currency", UserSchema, "currencies");
+const Currency = mongoose.model<ICurrency>("Currency", UserSchema, "currencies");
+export default Currency;

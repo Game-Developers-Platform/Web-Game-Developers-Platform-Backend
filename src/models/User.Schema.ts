@@ -15,6 +15,7 @@ export interface IUser {
     socialNetworks: { platform: string; url: string }[];
     gamesId: mongoose.Schema.Types.ObjectId[];
     birthDate: Date;
+    views: number;
 }
 
 const UserSchema = new mongoose.Schema<IUser>({
@@ -61,6 +62,11 @@ const UserSchema = new mongoose.Schema<IUser>({
         type: Date,
         required: true,
     },
+    views: {
+        type: Number,
+        default: 0,
+    },
 });
 
-export default mongoose.model<IUser>("User", UserSchema, "users");
+const User = mongoose.model<IUser>("User", UserSchema, "users");
+export default User;
