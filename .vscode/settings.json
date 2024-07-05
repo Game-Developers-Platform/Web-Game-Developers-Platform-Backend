@@ -3,7 +3,8 @@
         "maxlength",
         "Uplay"
     ],
-    "editor.tabSize": 4,
+    "editor.tabSize": 2,
     "editor.insertSpaces": true,
-    "prettier.tabWidth": 4
+    "prettier.tabWidth": 2,
+    "editor.wordWrap": "on"
 }
