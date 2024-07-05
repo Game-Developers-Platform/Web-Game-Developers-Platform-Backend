@@ -35,7 +35,7 @@ const getUserByEmail = async (req: Request, res: Response) => {
   }
 };
 
-//TODO - ?
+//TODO - remove or keep?
 const getUserDetails = async (req: Request, res: Response) => {
   try {
     const { token } = req.body;

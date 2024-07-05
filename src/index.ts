@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import bodyParser from "body-parser";
 import connectDB from "./config/dataBaseConnection";
-import authenticateToken from "./middlewares/tokenValidation";
+import authenticateToken from "./middlewares/middlewares";
 
 dotenv.config();
 

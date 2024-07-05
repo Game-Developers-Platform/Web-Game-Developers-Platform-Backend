@@ -11,11 +11,13 @@ const socialPlatforms = [
 export interface IUser {
   name: string;
   email: string;
-  image: string;
+  password: string;
+  profileImage: string;
   socialNetworks: { platform: string; url: string }[];
   gamesId: mongoose.Schema.Types.ObjectId[];
   birthDate: Date;
   views: number;
+  refreshTokens: string[];
 }
 
 const UserSchema = new mongoose.Schema<IUser>({
@@ -33,7 +35,7 @@ const UserSchema = new mongoose.Schema<IUser>({
     unique: true,
     match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
   },
-  image: {
+  profileImage: {
     type: String,
     required: true,
     match: /\.(jpeg|jpg|gif|png)$/,
