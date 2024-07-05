@@ -19,7 +19,7 @@ app.use(cors());
 //-------------------- TESTING WORKING WITH TOKENS: --------------------
 
 const generateAccessToken = (user) => {
-  return jwt.sign(user, process.env.JWT_TOKEN_SECRET, { expiresIn: "15m" });
+  return jwt.sign(user, process.env.JWT_TOKEN_SECRET, );
 };
 
 let refreshTokens = [];
