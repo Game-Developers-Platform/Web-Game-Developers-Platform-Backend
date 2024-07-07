@@ -3,57 +3,33 @@ import dotenv from "dotenv";
 import cors from "cors";
 import bodyParser from "body-parser";
 import connectDB from "./config/dataBaseConnection";
+import userRoutes from "./routes/users.routes";
+import gameRoutes from "./routes/games.routes";
+import authRoutes from "./routes/auth.routes";
+import Game from "./models/Game.Schema";
+import User from "./models/User.Schema";
+import Currency from "./models/Currency.Schema";
 import authenticateToken from "./middlewares/middlewares";
+import jsonWebToken from "jsonwebtoken";
 
 dotenv.config();
 
 const port = process.env.PORT || 3000;
 const app: Express = express();
 
-const jwt = require("jsonwebtoken");
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
-//-------------------- TESTING WORKING WITH TOKENS: --------------------
-
-const generateAccessToken = (user) => {
-  return jwt.sign(user, process.env.JWT_TOKEN_SECRET, );
-};
-
-let refreshTokens = [];
-
-//post request for new token:
-app.post("/token", (req, res) => {
-  const refreshToken = req.body.token;
-  if (refreshToken == null) return res.sendStatus(401);
-  if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403);
-  jwt.verify(
-    refreshToken,
-    process.env.JWT_REFRESH_TOKEN_SECRET,
-    (err, user) => {
-      if (err) return res.sendStatus(403);
-      const accessToken = generateAccessToken({ name: user.name });
-      res.json({ accessToken: accessToken });
-    }
-  );
-});
-
-app.post("/login", (req, res) => {
-  const username = req.body.username;
-  const user = { name: username };
-
-  const accessToken = generateAccessToken(user);
-  const refreshToken = jwt.sign(user, process.env.JWT_REFRESH_TOKEN_SECRET);
-  refreshTokens.push(refreshToken);
-  res.json({ accessToken: accessToken, refreshToken: refreshToken });
-});
-
-//-------------------- END OF TESTING WORKING WITH TOKENS: --------------------
+app.use("/users", userRoutes);
+app.use("/games", gameRoutes);
+app.use("/auth", authRoutes);
 
 app.listen(port, () => {
   try {
+    Game.create();
+    User.create();
+    Currency.create();
     connectDB();
     console.log(`Server is running at http://localhost:${port}`);
   } catch (error) {

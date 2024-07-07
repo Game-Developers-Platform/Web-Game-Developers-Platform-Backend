@@ -24,6 +24,7 @@ export interface IGame {
   platformLinks: { platform: string; url: string }[];
   releaseDate: Date;
   views: number;
+  categories: string[];
 }
 
 const GameSchema = new mongoose.Schema<IGame>({
@@ -79,7 +80,13 @@ const GameSchema = new mongoose.Schema<IGame>({
     type: Number,
     default: 0,
   },
+  categories: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
 });
 
-const Game = mongoose.model<IGame>("Game", GameSchema, "games");
+const Game = mongoose.model<IGame>("game", GameSchema, "games");
 export default Game;

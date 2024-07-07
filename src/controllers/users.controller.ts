@@ -21,11 +21,6 @@ const getUserById = async (req: Request, res: Response) => {
   }
 };
 
-const getUserByName = async (req: Request, res: Response) => {
-  const user = await userService.getUserByName(req.params.name);
-  res.status(200).json(user);
-};
-
 const getUserByEmail = async (req: Request, res: Response) => {
   try {
     const user = await userService.getUserByEmail(req.body.email);
@@ -53,7 +48,7 @@ const createUser = async (req: Request, res: Response) => {
       .split(" ")
       .map((s) => s.charAt(0).toUpperCase() + s.substring(1).toLowerCase())
       .join(" ");
-    const salt = bcrypt.genSaltSync(10); // I ADDED CONST ?
+    const salt = bcrypt.genSaltSync(10);
     user.email = user.email.toLowerCase();
     user.password = bcrypt.hashSync(user.password, salt);
     const createdUser = await userService.createUser(user);
@@ -90,23 +85,36 @@ const updateUser = async (req: Request, res: Response) => {
 };
 
 const generateAccessToken = (user) => {
-  return jwt.sign(user, process.env.JWT_TOKEN_SECRET, {
+  return jwt.sign({ id: user._id }, process.env.JWT_TOKEN_SECRET, {
     expiresIn: process.env.TOKEN_EXPIRATION_TIME,
+  });
+};
+
+const generateRefreshToken = (user) => {
+  return jwt.sign({ id: user._id }, process.env.JWT_REFRESH_SECRET, {
+    expiresIn: process.env.REFRESH_TOKEN_EXPIRATION_TIME,
   });
 };
 
 const userLogin = async (req: Request, res: Response) => {
   try {
     const user = await userService.getUserByEmail(req.body.email.toLowerCase());
+
     if (!user) {
       return res.status(400).json({ error: "Invalid email or password" });
     }
     if (!bcrypt.compareSync(req.body.password, user.password)) {
       return res.status(400).json({ error: "Invalid email or password" });
     }
+
+    user.refreshTokens = [];
+    await userService.updateUser(user._id.toString(), user);
+
     const token = generateAccessToken(user);
-    const refreshToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
+
     userService.addRefreshToken(user._id.toString(), refreshToken);
+
     res.status(200).json({ token: token, refreshToken: refreshToken });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -176,9 +184,9 @@ const reGenerateAccessToken = async (req: Request, res: Response) => {
 const logout = async (req: Request, res: Response) => {
   try {
     const { refreshToken } = req.body;
-    const user = jwt.decode(refreshToken) as { _id: string };
-    const userId = user._id;
-    await userService.removeRefreshToken(userId, refreshToken);
+    const userId = jwt.decode(refreshToken) as { id: string };
+    console.log(userId);
+    await userService.removeRefreshToken(userId.id, refreshToken);
     res.status(200).json({ message: "Logout successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -188,7 +196,6 @@ const logout = async (req: Request, res: Response) => {
 export default {
   getAllUsers,
   getUserById,
-  getUserByName,
   getUserByEmail,
   getUserDetails,
   createUser,
