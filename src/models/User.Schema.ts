@@ -33,7 +33,14 @@ const UserSchema = new mongoose.Schema<IUser>({
     required: true,
     trim: true,
     unique: true,
+    minlength: 3,
+    maxlength: 55,
     match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 6,
   },
   profileImage: {
     type: String,
@@ -56,8 +63,8 @@ const UserSchema = new mongoose.Schema<IUser>({
   ],
   gamesId: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Game",
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "game",
     },
   ],
   birthDate: {
@@ -68,7 +75,11 @@ const UserSchema = new mongoose.Schema<IUser>({
     type: Number,
     default: 0,
   },
+  refreshTokens: {
+    type: [String],
+    default: [],
+  },
 });
 
-const User = mongoose.model<IUser>("User", UserSchema, "users");
+const User = mongoose.model<IUser>("user", UserSchema, "users");
 export default User;

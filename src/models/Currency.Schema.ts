@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema<ICurrency>({
 });
 
 const Currency = mongoose.model<ICurrency>(
-  "Currency",
+  "currency",
   UserSchema,
   "currencies"
 );

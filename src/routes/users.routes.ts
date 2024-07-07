@@ -8,12 +8,8 @@ router.get("/", userController.getAllUsers);
 
 router.get("/:userId", userController.getUserById);
 
-//TODO - Change to get?
 router.post("/email", userController.getUserByEmail);
 
-router.get("/name/:name", userController.getUserByName);
-
-//TODO - Change to get?
 router.post(
   "/user-details",
   middlewares.authenticateToken,
@@ -27,7 +23,6 @@ router.put(
   userController.updateUser
 );
 
-router.post("/Test/", userController.createUser);
+router.delete("/:userId", userController.deleteUser);
 
-router.delete("/Test/:userId", userController.deleteUser);
 export default router;

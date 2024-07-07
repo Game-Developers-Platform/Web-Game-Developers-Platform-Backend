@@ -1,5 +1,5 @@
 import User, { IUser } from "../models/User.Schema";
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 const getAllUsers = async () => {
   return await User.find();
@@ -9,8 +9,8 @@ const getUserById = async (id: string) => {
   if (id) {
     try {
       const user = await User.findById(id).select("-password").populate({
-        path: "songs",
-        model: "song",
+        path: "gamesId",
+        model: "game",
       });
       if (user) {
         return user;
@@ -21,21 +21,6 @@ const getUserById = async (id: string) => {
     }
   }
   throw new Error("Id is required");
-};
-
-const getUserByName = async (name: string) => {
-  if (name) {
-    try {
-      const user = await User.findOne({ name });
-      if (user) {
-        return user;
-      }
-      return null;
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  }
-  throw new Error("Name is required");
 };
 
 const getUserByEmail = async (email: string) => {
@@ -153,7 +138,6 @@ const addRefreshToken = async (id: string, refreshToken: string) => {
 export default {
   getAllUsers,
   getUserById,
-  getUserByName,
   getUserByEmail,
   createUser,
   deleteUser,
