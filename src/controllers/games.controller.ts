@@ -1,6 +1,6 @@
 import gamesService from "../services/games.service";
 import { Request, Response } from "express";
-import {IGame} from "../models/Game.Schema"
+import { IGame } from "../models/Game.Schema";
 
 const getAllGames = async (req: Request, res: Response) => {
   try {

@@ -7,7 +7,7 @@ export interface ICurrency {
   exchangeRate: number;
 }
 
-const UserSchema = new mongoose.Schema<ICurrency>({
+const CurrencySchema = new mongoose.Schema<ICurrency>({
   name: {
     type: String,
     enum: supportedCurrencies,
@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema<ICurrency>({
 
 const Currency = mongoose.model<ICurrency>(
   "currency",
-  UserSchema,
+  CurrencySchema,
   "currencies"
 );
 export default Currency;

@@ -1,5 +1,4 @@
 import GameService, { IGame } from "../models/Game.Schema";
-import { ObjectId } from "mongoose";
 
 const getAllGames = async () => {
   try {
@@ -12,7 +11,9 @@ const getAllGames = async () => {
 const getGamesByIds = async (ids: string[]) => {
   if (!ids) throw new Error("Ids are required");
   try {
-    const games = await GameService.find({ _id: { $in: ids } }).populate("developerId");
+    const games = await GameService.find({ _id: { $in: ids } }).populate(
+      "developerId"
+    );
     if (games) return games;
     throw new Error("Games not found");
   } catch (error: any) {
@@ -22,10 +23,12 @@ const getGamesByIds = async (ids: string[]) => {
 
 const getGamesByDeveloper = async (developerId: string) => {
   console.log("developerId: ", developerId);
-  
+
   if (!developerId) throw new Error("Developer is required");
   try {
-    const games = await GameService.find({ developerId }).populate("developerId");
+    const games = await GameService.find({ developerId }).populate(
+      "developerId"
+    );
     console.log("games: ", games);
 
     if (games) return games;
@@ -36,9 +39,12 @@ const getGamesByDeveloper = async (developerId: string) => {
 };
 
 const getGamesByCategories = async (categories: string[]) => {
-  if (!categories || categories.length === 0) throw new Error("Categories are required");
+  if (!categories || categories.length === 0)
+    throw new Error("Categories are required");
   try {
-    const games = await GameService.find({ categories: { $in: categories } }).populate("developerId");
+    const games = await GameService.find({
+      categories: { $in: categories },
+    }).populate("developerId");
     if (games) return games;
     throw new Error("No games found for the given categories");
   } catch (error: any) {
@@ -74,7 +80,9 @@ const createGame = async (game: IGame) => {
 const deleteGame = async (id: string) => {
   if (!id) throw new Error("Game ID is required");
   try {
-    const deletedGame = await GameService.findByIdAndDelete(id).populate("developerId");
+    const deletedGame = await GameService.findByIdAndDelete(id).populate(
+      "developerId"
+    );
     if (deletedGame) return deletedGame;
     throw new Error("Game not found");
   } catch (error: any) {
