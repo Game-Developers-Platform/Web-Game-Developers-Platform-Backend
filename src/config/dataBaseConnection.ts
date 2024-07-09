@@ -3,7 +3,7 @@ const connectDB = () => {
   try {
     mongoose.connect(process.env.MONGO_URI!);
     mongoose.connection.once("open", () => {
-      console.log("Server - Connected to MongoDB");
+      console.log("Server is connected to MongoDB");
     });
   } catch (error) {
     console.error("Server -" + error);

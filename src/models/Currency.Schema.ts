@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const supportedCurrencies = ["ILS", "EUR", "GBP"];
+const supportedCurrencies = ["ILS", "EUR", "GBP", "JPY", "AUD", "CAD"];
 
 export interface ICurrency {
   name: string;

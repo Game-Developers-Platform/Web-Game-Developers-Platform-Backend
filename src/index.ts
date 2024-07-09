@@ -6,6 +6,7 @@ import connectDB from "./config/dataBaseConnection";
 import userRoutes from "./routes/users.routes";
 import gameRoutes from "./routes/games.routes";
 import authRoutes from "./routes/auth.routes";
+import currenciesRoutes from "./routes/currencies.routes";
 import Game from "./models/Game.Schema";
 import User from "./models/User.Schema";
 import Currency from "./models/Currency.Schema";
@@ -24,6 +25,7 @@ app.use(cors());
 app.use("/users", userRoutes);
 app.use("/games", gameRoutes);
 app.use("/auth", authRoutes);
+app.use("/currencies", currenciesRoutes);
 
 app.listen(port, () => {
   try {

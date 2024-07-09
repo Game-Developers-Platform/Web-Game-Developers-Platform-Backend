@@ -14,7 +14,7 @@ const getAllCurrencies = async (req: Request, res: Response) => {
 const getCurrenciesByIds = async (req: Request, res: Response) => {
   const { ids } = req.body;
   try {
-    const currencies = await currenciesService.getCurrenciesById(ids);
+    const currencies = await currenciesService.getCurrenciesByIds(ids);
     res.status(200).json(currencies);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -22,11 +22,9 @@ const getCurrenciesByIds = async (req: Request, res: Response) => {
 };
 
 const getCurrenciesByNames = async (req: Request, res: Response) => {
-  const { currencyNames } = req.body;
+  const { names } = req.body;
   try {
-    const currencies = await currenciesService.getCurrenciesByNames(
-      currencyNames
-    );
+    const currencies = await currenciesService.getCurrenciesByNames(names);
     res.status(200).json(currencies);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
