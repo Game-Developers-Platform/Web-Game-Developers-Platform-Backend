@@ -11,6 +11,16 @@ const getAllGames = async (req: Request, res: Response) => {
   }
 };
 
+const getGameById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const game = await gamesService.getGameById(id);
+    res.status(200).json(game);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const getGamesByIds = async (req: Request, res: Response) => {
   const { ids } = req.body;
   try {
@@ -84,6 +94,7 @@ const updateGame = async (req: Request, res: Response) => {
 
 export default {
   getAllGames,
+  getGameById,
   getGamesByIds,
   getGamesByDeveloper,
   getGamesByCategories,

@@ -13,6 +13,7 @@ const getUserById = async (id: string) => {
         model: "game",
       });
       if (user) {
+        console.log("User:", user);
         return user;
       }
       return null;

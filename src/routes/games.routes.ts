@@ -5,6 +5,7 @@ const router = Router();
 
 router.get("/", gamesController.getAllGames);
 router.get("/ids", gamesController.getGamesByIds);
+router.get("/:id", gamesController.getGameById);
 router.get("/developer/:developerId", gamesController.getGamesByDeveloper);
 router.get("/categories", gamesController.getGamesByCategories);
 router.post("/", gamesController.createGame);
