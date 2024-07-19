@@ -8,6 +8,7 @@ const socialPlatforms = [
   "Github",
 ];
 
+//If you change IUser make sure to update the interface on the frontend!
 export interface IUser {
   name: string;
   email: string;
@@ -63,7 +64,7 @@ const UserSchema = new mongoose.Schema<IUser>({
   ],
   gamesId: [
     {
-      type: [mongoose.Schema.Types.ObjectId],
+      type: mongoose.Schema.Types.ObjectId,
       ref: "game",
     },
   ],

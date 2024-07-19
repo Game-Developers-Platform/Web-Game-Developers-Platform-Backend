@@ -1,8 +1,22 @@
+import mongoose from "mongoose";
 import GameService, { IGame } from "../models/Game.Schema";
 
 const getAllGames = async () => {
   try {
     return await GameService.find().populate("developerId");
+  } catch (error: any) {
+    throw new Error(error?.message);
+  }
+};
+
+const getGameById = async (id: string) => {
+  if (!id) throw new Error("Game ID is required");
+  try {
+    const game = await GameService.findById(id).populate(
+      "developerId"
+    );
+    if (game) return game;
+    throw new Error("Game not found");
   } catch (error: any) {
     throw new Error(error?.message);
   }
@@ -108,6 +122,7 @@ const updateGame = async (id: string, updatedGameDetails: Partial<IGame>) => {
 
 export default {
   getAllGames,
+  getGameById,
   getGamesByIds,
   getGamesByDeveloper,
   getGamesByCategories,

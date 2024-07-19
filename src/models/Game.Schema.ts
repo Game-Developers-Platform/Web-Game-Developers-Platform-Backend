@@ -15,15 +15,16 @@ const supportedPlatforms = [
   "Apple App Store",
 ];
 
+//If you change IGame make sure to update the interface on the frontend!
 export interface IGame {
   name: string;
   price: number;
   image: string;
   description: string;
   developerId: mongoose.Schema.Types.ObjectId;
-  platformLinks: { platform: string; url: string }[];
+  platformLinks?: { platform: string; url: string }[];
   releaseDate: Date;
-  views: number;
+  views?: number;
   categories: string[];
 }
 
@@ -50,7 +51,7 @@ const GameSchema = new mongoose.Schema<IGame>({
     type: String,
     required: true,
     minlength: 10,
-    maxlength: 200,
+    maxlength: 300,
     trim: true,
   },
   developerId: {
