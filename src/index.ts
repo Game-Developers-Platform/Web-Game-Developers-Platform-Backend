@@ -6,6 +6,7 @@ import connectDB from "./config/dataBaseConnection";
 import userRoutes from "./routes/users.routes";
 import gameRoutes from "./routes/games.routes";
 import authRoutes from "./routes/auth.routes";
+import fileRoutes from "./routes/file.routes";
 import currenciesRoutes from "./routes/currencies.routes";
 import Game from "./models/Game.Schema";
 import User from "./models/User.Schema";
@@ -21,11 +22,13 @@ const app: Express = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
+app.use("/public", express.static("public"));
 
 app.use("/users", userRoutes);
 app.use("/games", gameRoutes);
 app.use("/auth", authRoutes);
 app.use("/currencies", currenciesRoutes);
+app.use("/uploadFiles", fileRoutes);
 
 app.listen(port, () => {
   try {

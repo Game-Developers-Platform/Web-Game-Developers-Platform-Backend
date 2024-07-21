@@ -51,6 +51,8 @@ const createUser = async (req: Request, res: Response) => {
     const salt = bcrypt.genSaltSync(10);
     user.email = user.email.toLowerCase();
     user.password = bcrypt.hashSync(user.password, salt);
+    console.log(user);
+    user.profileImage = "http://localhost:3000/public/" + user.profileImage;
     const createdUser = await userService.createUser(user);
     res.status(201).json(createdUser);
   } catch (error) {
@@ -115,7 +117,9 @@ const userLogin = async (req: Request, res: Response) => {
 
     userService.addRefreshToken(user._id.toString(), refreshToken);
 
-    res.status(200).json({ token: token, refreshToken: refreshToken });
+    res
+      .status(200)
+      .json({ token: token, refreshToken: refreshToken, userId: user._id });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -185,7 +189,6 @@ const logout = async (req: Request, res: Response) => {
   try {
     const { refreshToken } = req.body;
     const userId = jwt.decode(refreshToken) as { id: string };
-    console.log(userId);
     await userService.removeRefreshToken(userId.id, refreshToken);
     res.status(200).json({ message: "Logout successfully" });
   } catch (error) {
