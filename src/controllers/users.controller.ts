@@ -51,8 +51,7 @@ const createUser = async (req: Request, res: Response) => {
     const salt = bcrypt.genSaltSync(10);
     user.email = user.email.toLowerCase();
     user.password = bcrypt.hashSync(user.password, salt);
-    console.log(user);
-    user.profileImage = "http://localhost:3000/public/" + user.profileImage;
+    user.profileImage = user.profileImage;
     const createdUser = await userService.createUser(user);
     res.status(201).json(createdUser);
   } catch (error) {
@@ -72,15 +71,46 @@ const deleteUser = async (req: Request, res: Response) => {
 const updateUser = async (req: Request, res: Response) => {
   try {
     const { token, updatedUser } = req.body;
-    const user = jwt.decode(token) as { _id: string };
+    const user = jwt.decode(token) as { id: string };
     if (updatedUser.name)
       updatedUser.name = updatedUser.name
         .split(" ")
         .map((s) => s.charAt(0).toUpperCase() + s.substring(1).toLowerCase())
         .join(" ");
-    if (updatedUser.email) updatedUser.email = updatedUser.email.toLowerCase();
-    await userService.updateUser(user._id, updatedUser);
+    await userService.updateUser(user.id, updatedUser);
     res.status(200).json({ message: "User updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const addGameToUser = async (req: Request, res: Response) => {
+  try {
+    const { gameId } = req.body;
+    const userId = req.params.userId;
+    const user = await userService.getUserById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    user.gamesId.push(gameId);
+    await userService.updateUser(userId, user);
+    res.status(200).json({ message: "Game added to user successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const removeGameFromUser = async (req: Request, res: Response) => {
+  try {
+    const { gameId } = req.body;
+    const userId = req.params.userId;
+    const user = await userService.getUserById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    user.gamesId = user.gamesId.filter((id) => id !== gameId);
+    await userService.updateUser(userId, user);
+    res.status(200).json({ message: "Game removed from user successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -206,6 +236,8 @@ export default {
   updateUser,
   userLogin,
   checkToken,
+  addGameToUser,
+  removeGameFromUser,
   isRefreshTokenExist,
   verifyRefreshToken,
   reGenerateAccessToken,

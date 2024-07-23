@@ -7,6 +7,7 @@ import userRoutes from "./routes/users.routes";
 import gameRoutes from "./routes/games.routes";
 import authRoutes from "./routes/auth.routes";
 import fileRoutes from "./routes/file.routes";
+import commentsRoutes from "./routes/comments.routes";
 import currenciesRoutes from "./routes/currencies.routes";
 import Game from "./models/Game.Schema";
 import User from "./models/User.Schema";
@@ -29,6 +30,7 @@ app.use("/games", gameRoutes);
 app.use("/auth", authRoutes);
 app.use("/currencies", currenciesRoutes);
 app.use("/uploadFiles", fileRoutes);
+app.use("/comments", commentsRoutes);
 
 app.listen(port, () => {
   try {

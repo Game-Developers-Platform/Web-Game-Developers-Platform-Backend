@@ -9,7 +9,7 @@ const storage = multer.diskStorage({
     cb(null, "public");
   },
   filename: function (req, file, cb) {
-    cb(null, `${file.originalname}`);
+    cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
 
@@ -19,7 +19,7 @@ router.post(
   "/upload",
   upload.single("file"),
   (req: Request & { file: any }, res) => {
-    res.json({ file: req.file });
+    res.json({ file: req.file.path });
   }
 );
 

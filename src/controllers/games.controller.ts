@@ -51,16 +51,6 @@ const getGamesByCategories = async (req: Request, res: Response) => {
   }
 };
 
-const incrementGameViews = async (req: Request, res: Response) => {
-  const { gameId } = req.params;
-  try {
-    const game = await gamesService.incrementGameViews(gameId);
-    res.status(200).json(game);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
 const createGame = async (req: Request, res: Response) => {
   const gameData: IGame = req.body;
   try {
@@ -81,6 +71,38 @@ const deleteGame = async (req: Request, res: Response) => {
   }
 };
 
+const addCommentToGame = async (req: Request, res: Response) => {
+  try {
+    const { commentId } = req.body;
+    const gameId = req.params.id;
+    const game = await gamesService.getGameById(gameId);
+    if (!game) {
+      return res.status(404).json({ message: "Game not found" });
+    }
+    game.comments.push(commentId);
+    await gamesService.updateGame(gameId, game);
+    res.status(200).json({ message: "Comment added to game successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const removeCommentFromGame = async (req: Request, res: Response) => {
+  try {
+    const { commentId } = req.body;
+    const gameId = req.params.id;
+    const game = await gamesService.getGameById(gameId);
+    if (!game) {
+      return res.status(404).json({ message: "Game not found" });
+    }
+    game.comments = game.comments.filter((id) => id !== commentId);
+    await gamesService.updateGame(gameId, game);
+    res.status(200).json({ message: "Comment removed from game successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const updateGame = async (req: Request, res: Response) => {
   const { id } = req.params;
   const updatedGameDetails: Partial<IGame> = req.body;
@@ -96,9 +118,10 @@ export default {
   getAllGames,
   getGameById,
   getGamesByIds,
+  addCommentToGame,
+  removeCommentFromGame,
   getGamesByDeveloper,
   getGamesByCategories,
-  incrementGameViews,
   createGame,
   deleteGame,
   updateGame,

@@ -23,6 +23,10 @@ router.put(
   userController.updateUser
 );
 
+router.put("/addGame/:userId", userController.addGameToUser);
+
+router.put("/removeGame/:userId", userController.removeGameFromUser);
+
 router.delete("/:userId", userController.deleteUser);
 
 export default router;

@@ -39,8 +39,7 @@ Content-Type: application/json
       "url": "http://store.steampowered.com/app/example"
     }
   ],
-  "releaseDate": "2023-07-01T00:00:00.000Z",
-  "views": 0
+  "releaseDate": "2023-07-01T00:00:00.000Z"
 }
 
 ###
