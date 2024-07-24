@@ -14,6 +14,7 @@ import User from "./models/User.Schema";
 import Currency from "./models/Currency.Schema";
 import authenticateToken from "./middlewares/middlewares";
 import jsonWebToken from "jsonwebtoken";
+import "./currenciesUtils/currencyScheduler";
 
 dotenv.config();
 
