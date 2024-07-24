@@ -12,9 +12,9 @@ const getAllGames = async () => {
 const getGameById = async (id: string) => {
   if (!id) throw new Error("Game ID is required");
   try {
-    const game = await GameService.findById(id).populate(
-      "developerId"
-    );
+    const game = (
+      await GameService.findById(id).populate("developerId")
+    ).populate("comments");
     if (game) return game;
     throw new Error("Game not found");
   } catch (error: any) {
@@ -36,14 +36,11 @@ const getGamesByIds = async (ids: string[]) => {
 };
 
 const getGamesByDeveloper = async (developerId: string) => {
-  console.log("developerId: ", developerId);
-
   if (!developerId) throw new Error("Developer is required");
   try {
     const games = await GameService.find({ developerId }).populate(
       "developerId"
     );
-    console.log("games: ", games);
 
     if (games) return games;
     throw new Error("Developer not found");
@@ -61,21 +58,6 @@ const getGamesByCategories = async (categories: string[]) => {
     }).populate("developerId");
     if (games) return games;
     throw new Error("No games found for the given categories");
-  } catch (error: any) {
-    throw new Error(error?.message);
-  }
-};
-
-const incrementGameViews = async (gameId: string) => {
-  if (!gameId) throw new Error("Game ID is required");
-  try {
-    const game = await GameService.findByIdAndUpdate(
-      gameId,
-      { $inc: { views: 1 } },
-      { new: true }
-    ).populate("developerId");
-    if (game) return game;
-    throw new Error("Game not found");
   } catch (error: any) {
     throw new Error(error?.message);
   }
@@ -126,7 +108,6 @@ export default {
   getGamesByIds,
   getGamesByDeveloper,
   getGamesByCategories,
-  incrementGameViews,
   createGame,
   deleteGame,
   updateGame,

@@ -24,8 +24,8 @@ export interface IGame {
   developerId: mongoose.Schema.Types.ObjectId;
   platformLinks?: { platform: string; url: string }[];
   releaseDate: Date;
-  views?: number;
   categories: string[];
+  comments: mongoose.Schema.Types.ObjectId[];
 }
 
 const GameSchema = new mongoose.Schema<IGame>({
@@ -45,7 +45,8 @@ const GameSchema = new mongoose.Schema<IGame>({
   image: {
     type: String,
     required: true,
-    match: /^https?:\/\/[^\s$.?#].[^\s]*$/,
+    match:
+      /^(https?:\/\/[^\s$.?#].[^\s]*|public\/[^\s$.?#].[^\s]*|public\\[^\s$.?#].[^\s]*)$/,
   },
   description: {
     type: String,
@@ -77,14 +78,16 @@ const GameSchema = new mongoose.Schema<IGame>({
     type: Date,
     required: true,
   },
-  views: {
-    type: Number,
-    default: 0,
-  },
   categories: [
     {
       type: String,
       required: true,
+    },
+  ],
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "comment",
     },
   ],
 });

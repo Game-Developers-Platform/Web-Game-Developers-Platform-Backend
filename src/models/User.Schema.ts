@@ -17,7 +17,6 @@ export interface IUser {
   socialNetworks: { platform: string; url: string }[];
   gamesId: mongoose.Schema.Types.ObjectId[];
   birthDate: Date;
-  views: number;
   refreshTokens: string[];
 }
 
@@ -71,10 +70,6 @@ const UserSchema = new mongoose.Schema<IUser>({
   birthDate: {
     type: Date,
     required: true,
-  },
-  views: {
-    type: Number,
-    default: 0,
   },
   refreshTokens: {
     type: [String],

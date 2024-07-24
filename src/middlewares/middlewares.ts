@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 
 const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
   const { token } = req.body;
-  console.log(token);
   if (!token) return res.status(401).json({ message: "No token provided" });
   jwt.verify(token, process.env.JWT_TOKEN_SECRET, (err) => {
     if (err) return res.status(403).json({ message: "Invalid token" });
@@ -22,10 +21,10 @@ const registerAuth = (req: Request, res: Response, next: NextFunction) => {
     return res.status(400).json({ error: "Please enter a valid email" });
   }
 
-  if (password.length < 8) {
+  if (password.length < 6) {
     return res
       .status(400)
-      .json({ error: "Password must be at least 8 characters" });
+      .json({ error: "Password must be at least 6 characters" });
   }
   //check if name contains digits
   if (name.match(/\d/)) {
