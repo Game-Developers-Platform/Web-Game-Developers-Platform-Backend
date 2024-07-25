@@ -17,6 +17,7 @@ import "./currenciesUtils/currencyScheduler";
 
 dotenv.config();
 
+//TODO - change 3000 to 80(http) or 443(https) after deploy.
 const port = process.env.PORT || 3000;
 const app: Express = express();
 
