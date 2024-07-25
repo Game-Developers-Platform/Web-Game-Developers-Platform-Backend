@@ -7,7 +7,8 @@
     "start": "tsc && nodemon ./dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/index.ts",
-    "prod": "tsc -p tsconfig_prod.json && pm2 restart ecosystem.config.js --env production"
+    "prod": "tsc -p tsconfig_prod.json && pm2 restart ecosystem.config.js --env production",
+    "prodTest": "tsc -p tsconfig_prod.json && node ./dist/index.js"
   },
   "keywords": [],
   "author": "",
