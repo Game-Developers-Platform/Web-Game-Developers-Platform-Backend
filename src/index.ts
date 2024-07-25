@@ -9,11 +9,10 @@ import authRoutes from "./routes/auth.routes";
 import fileRoutes from "./routes/file.routes";
 import commentsRoutes from "./routes/comments.routes";
 import currenciesRoutes from "./routes/currencies.routes";
+import googleRoutes from "./routes/google.routes";
 import Game from "./models/Game.Schema";
 import User from "./models/User.Schema";
 import Currency from "./models/Currency.Schema";
-import authenticateToken from "./middlewares/middlewares";
-import jsonWebToken from "jsonwebtoken";
 import "./currenciesUtils/currencyScheduler";
 
 dotenv.config();
@@ -32,6 +31,7 @@ app.use("/auth", authRoutes);
 app.use("/currencies", currenciesRoutes);
 app.use("/uploadFiles", fileRoutes);
 app.use("/comments", commentsRoutes);
+app.use("/google", googleRoutes);
 
 app.listen(port, () => {
   try {

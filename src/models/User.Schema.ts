@@ -13,11 +13,11 @@ export interface IUser {
   name: string;
   email: string;
   password: string;
-  profileImage: string;
-  socialNetworks: { platform: string; url: string }[];
-  gamesId: mongoose.Schema.Types.ObjectId[];
-  birthDate: Date;
-  refreshTokens: string[];
+  profileImage?: string;
+  socialNetworks?: { platform: string; url: string }[];
+  gamesId?: mongoose.Schema.Types.ObjectId[];
+  birthDate?: Date;
+  refreshTokens?: string[];
 }
 
 const UserSchema = new mongoose.Schema<IUser>({
@@ -44,8 +44,8 @@ const UserSchema = new mongoose.Schema<IUser>({
   },
   profileImage: {
     type: String,
-    required: true,
     match: /\.(jpeg|jpg|gif|png)$/,
+    default: "public/default-image.png",
   },
   socialNetworks: [
     {
@@ -69,7 +69,6 @@ const UserSchema = new mongoose.Schema<IUser>({
   ],
   birthDate: {
     type: Date,
-    required: true,
   },
   refreshTokens: {
     type: [String],
