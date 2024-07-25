@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "tsc && nodemon ./dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "testComment": "jest  --forceExit --coverage --coverageDirectory=coverage/comments src/tests/comments.test.ts",
+    "aggregateCoverage": "jest --coverage --maxWorkers=5 --coverageDirectory=coverage --collectCoverageFrom=src/**/*.ts --forceExit",
     "dev": "nodemon src/index.ts",
     "prod": "tsc -p tsconfig_prod.json && pm2 restart ecosystem.config.js --env production",
     "prodTest": "tsc -p tsconfig_prod.json && node ./dist/index.js"
@@ -15,12 +17,14 @@
   "license": "ISC",
   "dependencies": {
     "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/multer": "^1.4.11",
-    "@types/node-cron": "^3.0.11",
-    "@types/express": "^4.17.21",
     "@types/node": "^20.14.9",
-    "@types/jest": "^29.5.12",
+    "@types/node-cron": "^3.0.11",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.6",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
@@ -34,13 +38,15 @@
     "multer": "^1.4.5-lts.1",
     "node-cron": "^3.0.3",
     "nodemon": "^3.1.4",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "ts-jest": "^29.1.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "ts-jest": "^29.1.5",
-    "@types/jest": "^29.5.12"
+    "@types/jest": "^29.5.12",
+    "ts-jest": "^29.1.5"
   }
 }
