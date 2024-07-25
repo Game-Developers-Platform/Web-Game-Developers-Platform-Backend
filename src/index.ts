@@ -15,8 +15,9 @@ import User from "./models/User.Schema";
 import Currency from "./models/Currency.Schema";
 import "./currenciesUtils/currencyScheduler";
 import https from "https";
-import http from "http";
 import fs from "fs";
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./swagger";
 
 const port = process.env.PORT || 3000;
 const httpsPort = process.env.HTTPS_PORT || 443;
@@ -37,6 +38,8 @@ const initApp = async () => {
   app.use("/uploadFiles", fileRoutes);
   app.use("/comments", commentsRoutes);
   app.use("/google", googleRoutes);
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
   Game.create();
   User.create();
   Currency.create();
