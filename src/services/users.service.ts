@@ -73,37 +73,34 @@ const deleteUser = async (id: string) => {
   throw new Error("Id is required");
 };
 
-const updateUser = async (id: string, newUser: Partial<IUser>) => {
-  if (!id) throw new Error("Id is required");
-  if (!newUser) throw new Error("Updated user details are required");
+const updateUser = async (id: string, newUserDetails: Partial<IUser>) => {
+  if (!id) throw new Error("User ID is required");
+  if (!newUserDetails) throw new Error("Updated user details are required");
 
   try {
     const currentUser = await User.findById(id);
     if (!currentUser) throw new Error("User not found");
 
-    if (newUser.socialNetworks) {
-      const socialNetworkMap = new Map(
-        currentUser.socialNetworks.map((link: any) => [link.platform, link])
-      );
-
-      newUser.socialNetworks.forEach((newLink: any) => {
-        if (socialNetworkMap.has(newLink.platform)) {
-          socialNetworkMap.set(newLink.platform, newLink);
-        } else {
-          socialNetworkMap.set(newLink.platform, newLink);
+    if (currentUser.socialNetworks?.length > 0) {
+      currentUser.socialNetworks.forEach((network) => {
+        if (
+          !newUserDetails.socialNetworks?.some(
+            (newNetwork) => newNetwork.platform === network.platform
+          )
+        ) {
+          newUserDetails.socialNetworks = newUserDetails.socialNetworks || [];
+          newUserDetails.socialNetworks.push(network);
         }
       });
-
-      currentUser.socialNetworks = Array.from(socialNetworkMap.values());
     }
 
-    Object.assign(currentUser, newUser);
-
-    const updatedUser = await currentUser.save();
-
-    return updatedUser;
+    const updatedUser = await User.findByIdAndUpdate(id, newUserDetails, {
+      new: true,
+    });
+    if (updatedUser) return updatedUser;
+    throw new Error("User not found");
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(error?.message);
   }
 };
 
