@@ -73,16 +73,38 @@ const deleteUser = async (id: string) => {
   throw new Error("Id is required");
 };
 
-const updateUser = async (id: string, newUser: IUser) => {
-  if (id && newUser) {
-    try {
-      await User.findOneAndUpdate({ _id: id }, newUser);
-      return newUser;
-    } catch (error) {
-      throw new Error(error.message);
+const updateUser = async (id: string, newUser: Partial<IUser>) => {
+  if (!id) throw new Error("Id is required");
+  if (!newUser) throw new Error("Updated user details are required");
+
+  try {
+    const currentUser = await User.findById(id);
+    if (!currentUser) throw new Error("User not found");
+
+    if (newUser.socialNetworks) {
+      const socialNetworkMap = new Map(
+        currentUser.socialNetworks.map((link: any) => [link.platform, link])
+      );
+
+      newUser.socialNetworks.forEach((newLink: any) => {
+        if (socialNetworkMap.has(newLink.platform)) {
+          socialNetworkMap.set(newLink.platform, newLink);
+        } else {
+          socialNetworkMap.set(newLink.platform, newLink);
+        }
+      });
+
+      currentUser.socialNetworks = Array.from(socialNetworkMap.values());
     }
+
+    Object.assign(currentUser, newUser);
+
+    const updatedUser = await currentUser.save();
+
+    return updatedUser;
+  } catch (error: any) {
+    throw new Error(error.message);
   }
-  throw new Error("Id and new user are required");
 };
 
 const removeRefreshTokens = async (id: string) => {
