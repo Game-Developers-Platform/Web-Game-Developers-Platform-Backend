@@ -90,19 +90,6 @@ const updateGame = async (id: string, updatedGameDetails: Partial<IGame>) => {
   if (!id) throw new Error("Game ID is required");
   if (!updatedGameDetails) throw new Error("Updated game details are required");
   try {
-    const currentGame = await GameService.findById(id);
-    if (!currentGame) throw new Error("Game not found");
-
-    if (currentGame.platformLinks?.length > 0) {
-      currentGame.platformLinks.forEach((link) => {
-        if (!updatedGameDetails.platformLinks?.includes(link)) {
-          updatedGameDetails.platformLinks =
-            updatedGameDetails.platformLinks || [];
-          updatedGameDetails.platformLinks.push(link);
-        }
-      });
-    }
-
     const updatedGame = await GameService.findByIdAndUpdate(
       id,
       updatedGameDetails,
