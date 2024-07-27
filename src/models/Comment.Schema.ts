@@ -20,7 +20,7 @@ const CommentSchema = new mongoose.Schema<IComment>({
   description: {
     type: String,
     required: true,
-    minlength: 10,
+    minlength: 2,
     maxlength: 120,
     trim: true,
   },
