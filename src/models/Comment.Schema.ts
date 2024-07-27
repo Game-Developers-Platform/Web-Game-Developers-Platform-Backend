@@ -21,7 +21,7 @@ const CommentSchema = new mongoose.Schema<IComment>({
     type: String,
     required: true,
     minlength: 2,
-    maxlength: 120,
+    maxlength: 60,
     trim: true,
   },
 });
