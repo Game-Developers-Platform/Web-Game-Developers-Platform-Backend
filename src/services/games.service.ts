@@ -89,32 +89,27 @@ const deleteGame = async (id: string) => {
 const updateGame = async (id: string, updatedGameDetails: Partial<IGame>) => {
   if (!id) throw new Error("Game ID is required");
   if (!updatedGameDetails) throw new Error("Updated game details are required");
-
   try {
     const currentGame = await GameService.findById(id);
     if (!currentGame) throw new Error("Game not found");
 
-    if (updatedGameDetails.platformLinks) {
-      const platformMap = new Map(
-        currentGame.platformLinks.map((link: any) => [link.platform, link])
-      );
-
-      updatedGameDetails.platformLinks.forEach((newLink: any) => {
-        if (platformMap.has(newLink.platform)) {
-          platformMap.set(newLink.platform, newLink);
-        } else {
-          platformMap.set(newLink.platform, newLink);
+    if (currentGame.platformLinks?.length > 0) {
+      currentGame.platformLinks.forEach((link) => {
+        if (!updatedGameDetails.platformLinks?.includes(link)) {
+          updatedGameDetails.platformLinks =
+            updatedGameDetails.platformLinks || [];
+          updatedGameDetails.platformLinks.push(link);
         }
       });
-
-      currentGame.platformLinks = Array.from(platformMap.values());
     }
 
-    Object.assign(currentGame, updatedGameDetails);
-
-    const updatedGame = await currentGame.save();
-
-    return updatedGame;
+    const updatedGame = await GameService.findByIdAndUpdate(
+      id,
+      updatedGameDetails,
+      { new: true }
+    ).populate("developerId");
+    if (updatedGame) return updatedGame;
+    throw new Error("Game not found");
   } catch (error: any) {
     throw new Error(error?.message);
   }
